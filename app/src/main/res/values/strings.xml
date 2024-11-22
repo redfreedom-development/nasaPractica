@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">nasaPractica</string>
+    <string name="menu_azar">Random Image</string>
+    <string name="menu_date">image Date Start</string>
 </resources>

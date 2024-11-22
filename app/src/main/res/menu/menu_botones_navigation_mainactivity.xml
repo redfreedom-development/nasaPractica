@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_azar"
+        android:icon="@android:drawable/ic_calendar"
+        app:showAsAction="always"
+        android:title="@string/menu_azar"/>
+    <item
+        android:id="@+id/menu_weekly"
+        android:icon="@android:drawable/ic_menu_week"
+        app:showAsAction="always"
+        android:title="@string/menu_date"/>
+
+</menu>
