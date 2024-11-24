@@ -6,5 +6,7 @@
     <string name="aceptar">Accept</string>
     <string name="cancelar">Cancel</string>
     <string name="aviso_int">You must enter an integer</string>
+    <string name="save">Save in DDBB</string>
+
 
 </resources>

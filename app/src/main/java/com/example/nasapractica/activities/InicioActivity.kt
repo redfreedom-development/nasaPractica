@@ -29,7 +29,7 @@ class InicioActivity : AppCompatActivity() {
             finish() // Cierra el SplashActivity
             mediaPlayer?.stop()
             mediaPlayer?.release()
-        }, 10000) // Tiempo en milisegundos (10 segundos)
+        }, 500) // Tiempo en milisegundos (10 segundos)
     }
     override fun onDestroy() {
         super.onDestroy()

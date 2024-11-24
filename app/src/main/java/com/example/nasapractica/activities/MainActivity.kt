@@ -1,6 +1,7 @@
 package com.example.nasapractica.activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -66,7 +67,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navigateToDetail(data: DatosNasa ){
-        //ya lo haremos
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("title", data.title)
+        intent.putExtra("url",data.url)
+        intent.putExtra("explanation",data.explanation)
+
+        startActivity(intent)
 
     }
 
@@ -79,20 +85,26 @@ class MainActivity : AppCompatActivity() {
             try {
 
 
+
                 if (query.toIntOrNull() != null) {
                  result = service.mostrarAlAzar(query)
+
                 }
                 else{
                      result = service.mostrarPorFechaInicio(query)
                 }
 
+                //leno la lista en la variable global pues despues la
+                //usaremos para pasar a la pantalla de details y result
+                //que tambien contiene la lista es una variable local
+                datosNasaList=result
 
 
 
                 CoroutineScope(Dispatchers.Main).launch{
 
 
-                    adapter.updateItems(result)
+                    adapter.updateItems(datosNasaList)
 
                 }
             } catch (e: Exception) {
