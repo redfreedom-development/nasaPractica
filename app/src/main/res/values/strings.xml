@@ -2,4 +2,9 @@
     <string name="app_name">nasaPractica</string>
     <string name="menu_azar">Random Image</string>
     <string name="menu_date">image Date Start</string>
+    <string name="mensaje_dialog_azar">How many photos would you like to display randomly?</string>
+    <string name="aceptar">Accept</string>
+    <string name="cancelar">Cancel</string>
+    <string name="aviso_int">You must enter an integer</string>
+
 </resources>

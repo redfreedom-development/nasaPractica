@@ -16,7 +16,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:menu="@menu/menu_botones_navigation_mainactivity"
-        />
+        app:itemHorizontalTranslationEnabled="true"
+
+    />
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"

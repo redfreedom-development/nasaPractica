@@ -14,6 +14,6 @@ interface DataNasaService {
 
     ): List<DatosNasa>
 
-    @GET("&start_date={fecha}")
-    suspend fun mostrarPorFechaInicio(@Path("fecha") identifier:String) : List<DatosNasa>
+    @GET("apod")
+    suspend fun mostrarPorFechaInicio(@Query("start_date") fecha:String) : List<DatosNasa>
 }

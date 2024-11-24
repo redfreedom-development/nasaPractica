@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_left_image"
+        android:icon="@drawable/ic_nasa"
+        app:showAsAction="ifRoom"
+        android:title="s"
+        />
+
+    <item
         android:id="@+id/menu_azar"
         android:icon="@drawable/ic_random"
         app:showAsAction="ifRoom"
         android:title="@string/menu_azar"/>
     <item
-        android:id="@+id/menu_weekly"
+        android:id="@+id/menu_date"
         android:icon="@drawable/ic_calendar"
         app:showAsAction="ifRoom"
         android:title="@string/menu_date"/>
