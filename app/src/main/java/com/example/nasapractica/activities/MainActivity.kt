@@ -1,5 +1,6 @@
 package com.example.nasapractica.activities
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -12,16 +13,17 @@ import com.example.nasapractica.R
 import com.example.nasapractica.adapters.AdapterMainActivity
 import com.example.nasapractica.data.DatosNasa
 import com.example.nasapractica.databinding.ActivityMainBinding
-import com.example.nasapractica.databinding.ActivityMainPruebaBinding
 import com.example.nasapractica.utils.RetrofitProvider
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
     //variables de entorno globales
-    lateinit var binding: ActivityMainPruebaBinding
+    lateinit var binding: ActivityMainBinding
     var datosNasaList: List<DatosNasa> = emptyList()
     lateinit var adapter: AdapterMainActivity
 
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //Binding para usar los objetos de mi pantalla
-        binding = ActivityMainPruebaBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //vamos a probar al iniciar la app que carga datos al azar LUEGO ESTO SE BORRARA
@@ -56,6 +58,9 @@ class MainActivity : AppCompatActivity() {
         binding.menuAzar.setOnClickListener {
             pulsa_menu_azar() // Llamabas a la función para manejar la acción
         }
+        binding.menuDate.setOnClickListener{
+            pulsa_menu_date()
+        }
 
 
     }
@@ -68,14 +73,21 @@ class MainActivity : AppCompatActivity() {
     private fun obtener_datos_nasa_retrofit(query: String) {
 
         val service = RetrofitProvider.getRetrofit()
+        var result: List<DatosNasa> = emptyList()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                val result = service.mostrarAlAzar(query)
-                for (data in result) {
-                    Log.d("API Response", "Title: ${data.title}, Image URL: ${data.url}")
+
+                if (query.toIntOrNull() != null) {
+                 result = service.mostrarAlAzar(query)
                 }
+                else{
+                     result = service.mostrarPorFechaInicio(query)
+                }
+
+
+
 
                 CoroutineScope(Dispatchers.Main).launch{
 
@@ -91,6 +103,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+    private fun pulsa_menu_date() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val fecha = mostrar_cuadro_dialogo_fecha()
+            Log.d("FechaSeleccionada", "Fecha obtenida: $fecha")
+            obtener_datos_nasa_retrofit(fecha)
+        }
     }
     private fun pulsa_menu_azar() {
         val builder = AlertDialog.Builder(this@MainActivity)
@@ -113,5 +132,30 @@ class MainActivity : AppCompatActivity() {
 
         builder.setNegativeButton(R.string.cancelar, null)
         builder.show()
+    }
+    private suspend fun mostrar_cuadro_dialogo_fecha(): String {
+        val deferred = CompletableDeferred<String>()
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this@MainActivity,
+            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                val formattedDate = "$selectedYear-${selectedMonth + 1}-${selectedDayOfMonth}"
+                deferred.complete(formattedDate)
+            },
+            year,
+            month,
+            day
+        )
+
+        val minDateCalendar = Calendar.getInstance()
+        minDateCalendar.set(1995, Calendar.JUNE, 17)
+        datePickerDialog.datePicker.minDate = minDateCalendar.timeInMillis
+
+        datePickerDialog.show()
+        return deferred.await()
     }
 }
