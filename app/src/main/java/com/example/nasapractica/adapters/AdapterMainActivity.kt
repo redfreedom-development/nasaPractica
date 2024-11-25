@@ -9,7 +9,7 @@ import com.example.nasapractica.databinding.ItemDatoNasaBinding
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class AdapterMainActivity(var itemList: List<DatosNasa>, val onItemClick: (Int) -> Unit):
+class AdapterMainActivity(var itemList: MutableList<DatosNasa>, val onItemClick: (Int) -> Unit):
     RecyclerView.Adapter<AdapterMainActivity.ViewHolder>() {
 
     class ViewHolder(val binding: ItemDatoNasaBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -42,7 +42,7 @@ class AdapterMainActivity(var itemList: List<DatosNasa>, val onItemClick: (Int) 
         }
     }
 
-    fun updateItems(items: List<DatosNasa>) {
+    fun updateItems(items: MutableList<DatosNasa>) {
         itemList = items
         notifyDataSetChanged()
     }

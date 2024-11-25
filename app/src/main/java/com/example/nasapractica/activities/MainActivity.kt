@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.nasapractica.R
 import com.example.nasapractica.adapters.AdapterMainActivity
 import com.example.nasapractica.data.DatosNasa
+import com.example.nasapractica.database.NasaDAO
 import com.example.nasapractica.databinding.ActivityMainBinding
 import com.example.nasapractica.utils.RetrofitProvider
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     //variables de entorno globales
     lateinit var binding: ActivityMainBinding
-    var datosNasaList: List<DatosNasa> = emptyList()
+    var datosNasaList: MutableList<DatosNasa> = mutableListOf()
     lateinit var adapter: AdapterMainActivity
-
-
+    val dao=NasaDAO(this)
+    private var listaDB: MutableList<com.example.nasapractica.data.DatosNasa> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +37,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //vamos a probar al iniciar la app que carga datos al azar LUEGO ESTO SE BORRARA
-        obtener_datos_nasa_retrofit("4")
+      // obtener_datos_nasa_retrofit("4")
+
+        //Al inicar el programa queremos ver si el usuario tiene alguna foto favorita en
+        //la BBDD. Si no tiene nada, le mostraremos un mensaje para que use los botones de busqueda
+        if (comprobar_favoritos()){
+            //como hay datos de favoritos pasamos la listaDB obtenida de base de datos a la variable del adapter
+            datosNasaList=listaDB
+
+        }
+        else{
+            dialogo_database_vacia()
+        }
 
         // creamos el adapter con la funcionalidad del onClick
         adapter = AdapterMainActivity(datosNasaList) { position ->
@@ -66,9 +77,39 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun dialogo_database_vacia() {
+        // Crear el diálogo de alerta
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.information)
+        builder.setMessage(R.string.database_empty)
+        builder.setPositiveButton(R.string.aceptar) { dialog, _ ->
+            // Cierra el diálogo al pulsar "Aceptar"
+            dialog.dismiss()
+        }
+
+        // Mostrar el diálogo
+        builder.create().show()
+    }
+
+    private fun comprobar_favoritos(): Boolean {
+
+        listaDB=dao.findAll()
+        var hayFavoritos = false
+
+        if(listaDB.isNotEmpty()){
+            hayFavoritos= true
+        }
+        else{ hayFavoritos= false}
+
+        return hayFavoritos
+
+    }
+
     fun navigateToDetail(data: DatosNasa ){
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.TITLE, data.title)
+
+
+       intent.putExtra(DetailActivity.TITLE, data.title)
         print(data.title)
         intent.putExtra(DetailActivity.URL, data.url)
         print(data.url)
@@ -81,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     private fun obtener_datos_nasa_retrofit(query: String) {
 
         val service = RetrofitProvider.getRetrofit()
-        var result: List<DatosNasa> = emptyList()
+        var result: MutableList<DatosNasa> = mutableListOf()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -119,9 +160,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun pulsa_menu_date() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val fecha = mostrar_cuadro_dialogo_fecha()
-            Log.d("FechaSeleccionada", "Fecha obtenida: $fecha")
+        mostrar_cuadro_dialogo_fecha { fecha ->
             obtener_datos_nasa_retrofit(fecha)
         }
     }
@@ -147,8 +186,7 @@ class MainActivity : AppCompatActivity() {
         builder.setNegativeButton(R.string.cancelar, null)
         builder.show()
     }
-    private suspend fun mostrar_cuadro_dialogo_fecha(): String {
-        val deferred = CompletableDeferred<String>()
+    private fun mostrar_cuadro_dialogo_fecha(fechaSeleccionada: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -158,7 +196,7 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity,
             { _, selectedYear, selectedMonth, selectedDayOfMonth ->
                 val formattedDate = "$selectedYear-${selectedMonth + 1}-${selectedDayOfMonth}"
-                deferred.complete(formattedDate)
+                fechaSeleccionada(formattedDate)
             },
             year,
             month,
@@ -170,6 +208,5 @@ class MainActivity : AppCompatActivity() {
         datePickerDialog.datePicker.minDate = minDateCalendar.timeInMillis
 
         datePickerDialog.show()
-        return deferred.await()
     }
 }

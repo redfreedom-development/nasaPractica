@@ -12,8 +12,8 @@ interface DataNasaService {
     suspend fun mostrarAlAzar(
        @Query("count") num: String
 
-    ): List<DatosNasa>
+    ): MutableList<DatosNasa>
 
     @GET("apod")
-    suspend fun mostrarPorFechaInicio(@Query("start_date") fecha:String) : List<DatosNasa>
+    suspend fun mostrarPorFechaInicio(@Query("start_date") fecha:String) : MutableList<DatosNasa>
 }

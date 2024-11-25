@@ -7,6 +7,9 @@
     <string name="cancelar">Cancel</string>
     <string name="aviso_int">You must enter an integer</string>
     <string name="save">Save in DDBB</string>
-
+    <string name="information">Information</string>
+    <string name="database_empty">You don’t have any photo of the day saved in your database. Use the menu to get random photos of the day or from a specific date.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="mensaje_grabar">Do you want to save this photo in your data base?</string>
 
 </resources>

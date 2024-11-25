@@ -34,7 +34,7 @@
 
         <!-- Íconos de la derecha -->
         <ImageView
-            android:id="@+id/menu_azar"
+            android:id="@+id/menuGrabar"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:src="@drawable/ic_save"
