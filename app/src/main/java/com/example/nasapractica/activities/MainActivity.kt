@@ -68,10 +68,12 @@ class MainActivity : AppCompatActivity() {
 
     fun navigateToDetail(data: DatosNasa ){
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("title", data.title)
-        intent.putExtra("url",data.url)
-        intent.putExtra("explanation",data.explanation)
-
+        intent.putExtra(DetailActivity.TITLE, data.title)
+        print(data.title)
+        intent.putExtra(DetailActivity.URL, data.url)
+        print(data.url)
+        intent.putExtra(DetailActivity.EXPLANATION, data.explanation)
+        print(data.explanation)
         startActivity(intent)
 
     }
