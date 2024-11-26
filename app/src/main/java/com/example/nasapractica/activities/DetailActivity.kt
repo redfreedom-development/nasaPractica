@@ -1,7 +1,10 @@
 package com.example.nasapractica.activities
 
 import android.content.Intent
+import android.os.Binder
 import android.os.Bundle
+import android.renderscript.ScriptGroup.Binding
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +25,7 @@ class DetailActivity : AppCompatActivity() {
         const val TITLE = "TITLE"
         const val URL = "URL"
         const val EXPLANATION = "EXPLANATION"
+        const val DATE = "DATE"
 
     }
 
@@ -42,16 +46,19 @@ class DetailActivity : AppCompatActivity() {
         val titulo = intent.getStringExtra(TITLE)!!
         val url = intent.getStringExtra(URL)!!
         val explanation = intent.getStringExtra(EXPLANATION)!!
+        val date = intent.getStringExtra(DATE)!!
 
 
 
-        datosNasa=DatosNasa(id,explanation,titulo,url)
+        datosNasa=DatosNasa(id,date,explanation,titulo,url)
 
 
 
 
 
         mostrar_datos_details(datosNasa)
+
+        comprobar_si_existe_ya_en_database(datosNasa)
 
         binding.menuGrabar.setOnClickListener(){
             mostrar_cuadro_dialogo_grabar(datosNasa)
@@ -61,6 +68,23 @@ class DetailActivity : AppCompatActivity() {
 
             mostrar_cuadro_dialogo_delete(datosNasa)
         }*/
+
+    }
+
+    private fun comprobar_si_existe_ya_en_database(datosNasa: DatosNasa) {
+
+
+
+        val respuesta=dao.findByDate(datosNasa.date)
+        if (respuesta!=false){
+            binding.menuGrabar.isEnabled=false
+            binding.menuGrabar.alpha=0.1f
+
+        }
+        else{
+            binding.menuGrabar.isEnabled=true
+            binding.menuGrabar.alpha=1f
+        }
 
     }
 
@@ -111,7 +135,13 @@ class DetailActivity : AppCompatActivity() {
             // Acción al aceptar
             dialog.dismiss()
 
-            dao.insert(datosNasa)
+           val ok= dao.insert(datosNasa)
+            if(ok!=-1L){
+                Toast.makeText(this, R.string.insert_ok, Toast.LENGTH_SHORT).show()
+                binding.menuGrabar.isEnabled=false
+                binding.menuGrabar.alpha=0.5f
+
+            }
 
         }
         builder.setNegativeButton(R.string.cancelar) { dialog, which ->

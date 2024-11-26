@@ -18,7 +18,9 @@ class NasaDAO(val context: Context) {
         db.close()
     }
 
-    fun insert(datosNasa: DatosNasa) {
+    fun insert(datosNasa: DatosNasa) : Long {
+
+        var id = -1L //inicializo así porque es un Long y el valor si falla el insert será de -1
         open()
 
         // Create a new map of values, where column names are the keys
@@ -26,17 +28,21 @@ class NasaDAO(val context: Context) {
             put(DatosNasa.COLUMN_TITLE, datosNasa.title)
             put(DatosNasa.COLUMN_URL, datosNasa.url)
             put(DatosNasa.COLUMN_EXPLANATION, datosNasa.explanation)
+            put(DatosNasa.COLUMN_DATE,datosNasa.date)
 
         }
 
         try {
             // Insert the new row, returning the primary key value of the new row
-            val id = db.insert(DatosNasa.TABLE_NAME, null, values)
+              id = db.insert(DatosNasa.TABLE_NAME, null, values)
+
         } catch (e: Exception) {
             Log.e("DB", e.stackTraceToString())
         } finally {
             close()
         }
+
+        return id
     }
 
     fun findAll() : MutableList<DatosNasa> {
@@ -46,7 +52,7 @@ class NasaDAO(val context: Context) {
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
-        val projection = arrayOf(DatosNasa.COLUMN_ID, DatosNasa.COLUMN_TITLE, DatosNasa.COLUMN_URL,DatosNasa.COLUMN_EXPLANATION)
+        val projection = arrayOf(DatosNasa.COLUMN_ID, DatosNasa.COLUMN_TITLE, DatosNasa.COLUMN_URL,DatosNasa.COLUMN_EXPLANATION,DatosNasa.COLUMN_DATE)
 
         try {
             val cursor = db.query(
@@ -64,8 +70,9 @@ class NasaDAO(val context: Context) {
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_TITLE))
                 val url = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_URL))
                 val explanation = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_EXPLANATION))
+                val date = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_DATE))
 
-                val datosNasa = DatosNasa(id, explanation,title,url)
+                val datosNasa = DatosNasa(id, date, explanation,title,url)
                 list.add(datosNasa)
             }
         } catch (e: Exception) {
@@ -100,6 +107,47 @@ class NasaDAO(val context: Context) {
 
         }
         return deletedRows
+
+    }
+
+    fun findByDate(date: String) : Boolean {
+        open()
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        val projection = arrayOf(DatosNasa.COLUMN_DATE)
+        var respuesta = true
+
+
+        try {
+            val cursor = db.query(
+                DatosNasa.TABLE_NAME,                    // The table to query
+                projection,                         // The array of columns to return (pass null to get all)
+                "${DatosNasa.COLUMN_DATE} = $date",  // The columns for the WHERE clause
+                null,                   // The values for the WHERE clause
+                null,                       // don't group the rows
+                null,                         // don't filter by row groups
+                null                         // The sort order
+            )
+
+            if (cursor.moveToNext()) {
+              //  val id = cursor.getLong(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_ID)).toInt()
+                val fech = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_DATE))
+                //val explanation = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_EXPLANATION))
+                //val title = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_TITLE))
+                //val url = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_URL))
+
+                respuesta = false
+
+            }
+
+
+        } catch (e: Exception) {
+            Log.e("DB", e.stackTraceToString())
+        } finally {
+            close()
+        }
+       return respuesta
 
     }
 

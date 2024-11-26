@@ -170,6 +170,8 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(DetailActivity.URL, data.url)
         print(data.url)
         intent.putExtra(DetailActivity.EXPLANATION, data.explanation)
+        intent.putExtra(DetailActivity.DATE, data.date)
+
         print(data.explanation)
         startActivity(intent)
 

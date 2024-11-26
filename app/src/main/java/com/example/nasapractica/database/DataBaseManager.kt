@@ -9,7 +9,7 @@ class DataBaseManager(context: Context) : SQLiteOpenHelper( context, DATABASE_NA
 ) {
     companion object {
         const val DATABASE_NAME = "nasa_database.db"
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 5
 
 
 
@@ -18,7 +18,9 @@ class DataBaseManager(context: Context) : SQLiteOpenHelper( context, DATABASE_NA
                 ${DatosNasa.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
                 ${DatosNasa.COLUMN_TITLE} TEXT,
                 ${DatosNasa.COLUMN_URL} TEXT,  
-                 ${DatosNasa.COLUMN_EXPLANATION} TEXT
+                 ${DatosNasa.COLUMN_EXPLANATION} TEXT,
+                  ${DatosNasa.COLUMN_DATE} TEXT
+                 
 
                 
             )
