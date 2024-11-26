@@ -3,13 +3,14 @@ package com.example.nasapractica.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemLongClickListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasapractica.data.DatosNasa
 import com.example.nasapractica.databinding.ItemDatoNasaBinding
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class AdapterMainActivity(var itemList: MutableList<DatosNasa>, val onItemClick: (Int) -> Unit):
+class AdapterMainActivity(var itemList: MutableList<DatosNasa>, val onItemClick: (Int) -> Unit, val onItemLongClickListener: (Int)->Unit):
     RecyclerView.Adapter<AdapterMainActivity.ViewHolder>() {
 
     class ViewHolder(val binding: ItemDatoNasaBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -39,6 +40,11 @@ class AdapterMainActivity(var itemList: MutableList<DatosNasa>, val onItemClick:
         holder.render(datosNasa)
         holder.itemView.setOnClickListener {
             onItemClick(position)
+        }
+        // Pulsación larga
+        holder.itemView.setOnLongClickListener {
+            onItemLongClickListener(position)
+            true // Retorna 'true' para indicar que el evento ha sido consumido
         }
     }
 

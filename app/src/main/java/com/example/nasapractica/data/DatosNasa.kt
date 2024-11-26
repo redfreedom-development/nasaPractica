@@ -21,7 +21,7 @@ data class DatosNasa(
         // El 'id' podría ser 0 por defecto, luego se asignará automáticamente al insertar en la base de datos.
     }
     companion object {
-        const val TABLE_NAME = "peliculas"
+        const val TABLE_NAME = "imagenDelDiaNasa"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE= "titulo"
         const val COLUMN_URL = "url"

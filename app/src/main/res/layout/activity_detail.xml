@@ -30,16 +30,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"/>
-
+            android:textSize="16sp"
+            android:ellipsize="end"/>
         <!-- Íconos de la derecha -->
+       <!-- <ImageView
+            android:id="@+id/menuDelete"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_delete"
+            android:layout_gravity="end"
+             />-->
+
+
         <ImageView
             android:id="@+id/menuGrabar"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:src="@drawable/ic_save"
             android:layout_gravity="end"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="5dp" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Imagen debajo del Toolbar -->
@@ -50,12 +59,20 @@
         app:layout_constraintTop_toBottomOf="@id/custom_toolbar_detail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/txtexplanation"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintHeight_percent="0.6"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop" />
 
     <!-- Texto de explicación -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgDetail"
+        app:layout_constraintBottom_toBottomOf="parent">
     <TextView
         android:id="@+id/txtexplanation"
         android:layout_width="match_parent"
@@ -64,5 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

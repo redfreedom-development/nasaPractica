@@ -51,18 +51,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         // creamos el adapter con la funcionalidad del onClick
-        adapter = AdapterMainActivity(datosNasaList) { position ->
-            try {
-                // Intenta acceder al elemento de la lista usando el position
-                val data = datosNasaList[position]
-                navigateToDetail(data)
-            } catch (e: IndexOutOfBoundsException) {
-                Log.e("RecyclerView", "Error al acceder al índice $position: ${e.message}")
-            } catch (e: Exception) {
-                Log.e("RecyclerView", "Error inesperado al hacer clic: ${e.message}")
+        adapter = AdapterMainActivity(
+            datosNasaList,
+            onItemClick = { position ->
+                try {
+                    // Intenta acceder al elemento de la lista usando el position
+                    val data = datosNasaList[position]
+                    navigateToDetail(data)
+                } catch (e: IndexOutOfBoundsException) {
+                    Log.e("RecyclerView", "Error al acceder al índice $position: ${e.message}")
+                } catch (e: Exception) {
+                    Log.e("RecyclerView", "Error inesperado al hacer clic: ${e.message}")
+                }
+            },
+            onItemLongClickListener = { position ->
+                // Acciones al realizar una pulsación larga sobre el elemento
+                mostrar_cuadro_dialogo_delete(position)
+                // Aquí puedes agregar las acciones que desees realizar en caso de una pulsación larga.
             }
-        }
-
+        )
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
@@ -73,6 +80,54 @@ class MainActivity : AppCompatActivity() {
         binding.menuDate.setOnClickListener{
             pulsa_menu_date()
         }
+
+
+    }
+
+    private fun actualizar_datos_recyclerview() {
+        // Actualizar la lista desde el DAO
+        datosNasaList.clear() // Limpia la lista actual
+        datosNasaList.addAll(dao.findAll()) // Supongamos que `getAll` devuelve la lista actualizada
+
+        // Notificar al adaptador del cambio
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun mostrar_cuadro_dialogo_delete(position: Int) {
+        val builder = AlertDialog.Builder(this)
+
+
+        builder.setTitle(R.string.confirmation)
+        builder.setMessage(R.string.mensaje_delete)
+
+
+        builder.setPositiveButton(R.string.aceptar) { dialog, which ->
+            // Acción al aceptar
+            dialog.dismiss()
+
+            val data = datosNasaList[position]
+
+            dao.deleteById(data)
+
+            actualizar_datos_recyclerview()
+
+
+        }
+        builder.setNegativeButton(R.string.cancelar) { dialog, which ->
+            // Acción al cancelar
+            dialog.dismiss()
+        }
+
+        // Deshabilitar la cancelación al tocar fuera del diálogo
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
 
 
     }
@@ -108,7 +163,8 @@ class MainActivity : AppCompatActivity() {
     fun navigateToDetail(data: DatosNasa ){
         val intent = Intent(this, DetailActivity::class.java)
 
-
+      //  print(data.id)
+        intent.putExtra(DetailActivity.ID,data.id)
        intent.putExtra(DetailActivity.TITLE, data.title)
         print(data.title)
         intent.putExtra(DetailActivity.URL, data.url)
@@ -209,4 +265,6 @@ class MainActivity : AppCompatActivity() {
 
         datePickerDialog.show()
     }
+
+
 }

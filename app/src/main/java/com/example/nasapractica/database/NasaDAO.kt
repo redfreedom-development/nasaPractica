@@ -65,7 +65,7 @@ class NasaDAO(val context: Context) {
                 val url = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_URL))
                 val explanation = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_EXPLANATION))
 
-                val datosNasa = DatosNasa(id, title, url,explanation)
+                val datosNasa = DatosNasa(id, explanation,title,url)
                 list.add(datosNasa)
             }
         } catch (e: Exception) {
@@ -74,6 +74,33 @@ class NasaDAO(val context: Context) {
             close()
         }
         return list
+    }
+
+    fun deleteById(datosNasa: DatosNasa): Int {
+
+        var deletedRows=0
+        open()
+
+
+        try {
+            // Delete the existing row, returning the number of affected rows
+            deletedRows = db.delete(
+                DatosNasa.TABLE_NAME,
+                "${DatosNasa.COLUMN_ID} = ?",
+                arrayOf(datosNasa.id.toString()) // Asegúrate de convertir los valores a String
+            )
+
+
+
+        } catch (e: Exception) {
+            Log.e("DB", e.stackTraceToString())
+        } finally {
+            close()
+
+
+        }
+        return deletedRows
+
     }
 
 
