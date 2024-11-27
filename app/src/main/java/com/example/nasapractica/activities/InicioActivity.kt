@@ -39,7 +39,7 @@ class InicioActivity : AppCompatActivity() {
             finish() // Cierra el SplashActivity
             mediaPlayer?.stop()
             mediaPlayer?.release()
-        }, 7000) // Tiempo en milisegundos (10 segundos)
+        }, 100) // Tiempo en milisegundos (10 segundos)
     }
 
 

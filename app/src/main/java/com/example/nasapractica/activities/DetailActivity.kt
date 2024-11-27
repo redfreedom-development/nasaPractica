@@ -5,6 +5,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.renderscript.ScriptGroup.Binding
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -80,11 +81,16 @@ class DetailActivity : AppCompatActivity() {
         if (respuesta){
             binding.menuGrabar.isEnabled=false
             binding.menuGrabar.alpha=0.1f
+            //PODEMOS AÑADIR UNA PAPELERA PARA QUE BORRE DESDE AQUI
+            binding.menuBorrar.isEnabled=true
+            binding.menuBorrar.alpha=1f
 
         }
         else{
             binding.menuGrabar.isEnabled=true
             binding.menuGrabar.alpha=1f
+            binding.menuBorrar.isEnabled=false
+            binding.menuBorrar.alpha=0.1f
         }
 
     }

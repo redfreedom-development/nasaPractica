@@ -41,14 +41,23 @@
             android:layout_gravity="end"
              />-->
 
+        <ImageView
+            android:id="@+id/menuBorrar"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_delete"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
 
+            />
         <ImageView
             android:id="@+id/menuGrabar"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:src="@drawable/ic_save"
             android:layout_gravity="end"
-            android:layout_marginEnd="5dp" />
+            android:layout_marginEnd="5dp"
+            />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Imagen debajo del Toolbar -->
