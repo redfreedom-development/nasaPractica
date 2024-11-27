@@ -77,14 +77,14 @@ class MainActivity : AppCompatActivity() {
             pulsa_menu_date()
         }
         binding.menuFavorite.setOnClickListener(){
-            if (comprobar_favoritos()){
+
                 //como hay datos de favoritos pasamos la listaDB obtenida de base de datos a la variable del adapter
                 actualizar_datos_recyclerview()
 
                 binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
                 controlPantallaVuelta="menu_favorite"
 
-            }
+
 
         }
 
@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
              binding.menuFavorite.isEnabled=false
             binding.menuFavorite.alpha=1f
+            controlPantallaVuelta="menu_favorite"
 
         }
         else{

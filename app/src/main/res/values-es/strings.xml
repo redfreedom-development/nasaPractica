@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">nasaPractica</string>
+    <string name="menu_azar">Imagen Aleatoria</string>
+    <string name="menu_date">Fecha inicio</string>
+    <string name="mensaje_dialog_azar">Cuantas fotos quieres mostrar al azar?</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="aviso_int">Debes introducir un número entero</string>
+    <string name="save">Guardar en base de datos</string>
+    <string name="information">Información</string>
+    <string name="database_empty">No hay fotos favoritas en tu base de datos. Usa los botones de buscar fotos al azar o desde una fecha específica</string>
+    <string name="confirmation">Confirmación</string>
+    <string name="mensaje_grabar">Quieres guardar esta foto en base de datos?</string>
+    <string name="mensaje_delete">Quieres borra esta foto de tu base de datos?</string>
+    <string name="insert_ok">Foto guardada correctamente</string>
+</resources>
