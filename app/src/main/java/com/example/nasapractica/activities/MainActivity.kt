@@ -3,6 +3,7 @@ package com.example.nasapractica.activities
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Gravity
 import android.widget.EditText
@@ -270,6 +271,9 @@ class MainActivity : AppCompatActivity() {
     private fun pulsa_menu_azar() {
         val builder = AlertDialog.Builder(this@MainActivity)
         val editText = EditText(this@MainActivity)
+
+        // Configura el EditText para permitir solo números enteros
+        editText.inputType = InputType.TYPE_CLASS_NUMBER
 
         builder.setTitle(R.string.menu_azar)
         builder.setMessage(R.string.mensaje_dialog_azar)
