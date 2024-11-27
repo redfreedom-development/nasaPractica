@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.renderscript.ScriptGroup.Binding
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -54,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
 
 
 
-
+        Log.d("Lifecycle", "HAS LLAMADO AL ONCREATE");
 
         mostrar_datos_details(datosNasa)
 
@@ -76,7 +77,7 @@ class DetailActivity : AppCompatActivity() {
 
 
         val respuesta=dao.findByDate(datosNasa.date)
-        if (respuesta!=false){
+        if (respuesta){
             binding.menuGrabar.isEnabled=false
             binding.menuGrabar.alpha=0.1f
 

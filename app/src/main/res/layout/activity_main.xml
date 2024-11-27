@@ -32,6 +32,8 @@
 
                 />
             <!-- Íconos de la derecha -->
+
+
             <ImageView
                 android:id="@+id/menu_azar"
                 android:layout_width="34dp"
@@ -48,7 +50,14 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
              />
-
+            <ImageView
+                android:id="@+id/menu_favorite"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_favorite"
+                android:layout_gravity="end"
+                android:layout_marginEnd="30dp"
+                />
 
 
         </androidx.appcompat.widget.Toolbar>

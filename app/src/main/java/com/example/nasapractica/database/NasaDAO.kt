@@ -116,15 +116,15 @@ class NasaDAO(val context: Context) {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         val projection = arrayOf(DatosNasa.COLUMN_DATE)
-        var respuesta = true
+        var respuesta = false
 
 
         try {
             val cursor = db.query(
                 DatosNasa.TABLE_NAME,                    // The table to query
                 projection,                         // The array of columns to return (pass null to get all)
-                "${DatosNasa.COLUMN_DATE} = $date",  // The columns for the WHERE clause
-                null,                   // The values for the WHERE clause
+                "${DatosNasa.COLUMN_DATE}=?",  // The columns for the WHERE clause
+                arrayOf(date),                   // The values for the WHERE clause
                 null,                       // don't group the rows
                 null,                         // don't filter by row groups
                 null                         // The sort order
@@ -137,7 +137,7 @@ class NasaDAO(val context: Context) {
                 //val title = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_TITLE))
                 //val url = cursor.getString(cursor.getColumnIndexOrThrow(DatosNasa.COLUMN_URL))
 
-                respuesta = false
+                respuesta = true
 
             }
 
@@ -151,5 +151,27 @@ class NasaDAO(val context: Context) {
 
     }
 
+    fun num_registros_database(): Int{
 
+        open()
+        var registrosRestantes = 0
+        try{
+            val cursor=db.rawQuery("SELECT COUNT(*) FROM ${DatosNasa.TABLE_NAME}", null)
+
+            if (cursor.moveToFirst()) {
+                // Si hay al menos un registro, accedemos al valor del COUNT
+                registrosRestantes = cursor.getInt(0)
+            }
+
+            cursor.close()
+
+
+        }
+        catch (e: Exception) {
+            Log.e("DB", e.stackTraceToString())
+        } finally {
+            close()
+        }
+        return registrosRestantes
+    }
 }

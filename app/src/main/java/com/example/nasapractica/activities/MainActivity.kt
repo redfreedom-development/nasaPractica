@@ -24,6 +24,7 @@ import java.util.Calendar
 class MainActivity : AppCompatActivity() {
 
     //variables de entorno globales
+    var controlPantallaVuelta=""
     lateinit var binding: ActivityMainBinding
     var datosNasaList: MutableList<DatosNasa> = mutableListOf()
     lateinit var adapter: AdapterMainActivity
@@ -41,14 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         //Al inicar el programa queremos ver si el usuario tiene alguna foto favorita en
         //la BBDD. Si no tiene nada, le mostraremos un mensaje para que use los botones de busqueda
-        if (comprobar_favoritos()){
-            //como hay datos de favoritos pasamos la listaDB obtenida de base de datos a la variable del adapter
-            datosNasaList=listaDB
 
-        }
-        else{
-            dialogo_database_vacia()
-        }
 
         // creamos el adapter con la funcionalidad del onClick
         adapter = AdapterMainActivity(
@@ -72,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         )
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
+        actualizar_datos_recyclerview()
+
 
         // Listener del menu_azar
         binding.menuAzar.setOnClickListener {
@@ -80,9 +76,59 @@ class MainActivity : AppCompatActivity() {
         binding.menuDate.setOnClickListener{
             pulsa_menu_date()
         }
+        binding.menuFavorite.setOnClickListener(){
+            if (comprobar_favoritos()){
+                //como hay datos de favoritos pasamos la listaDB obtenida de base de datos a la variable del adapter
+                actualizar_datos_recyclerview()
 
+                binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
+                controlPantallaVuelta="menu_favorite"
 
+            }
+
+        }
+
+        if (comprobar_favoritos()){
+            //como hay datos de favoritos pasamos la listaDB obtenida de base de datos a la variable del adapter
+            Log.d("onCreate", "Hay favoritos en la base de datos")
+            binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
+             binding.menuFavorite.isEnabled=false
+            binding.menuFavorite.alpha=1f
+
+        }
+        else{
+            dialogo_database_vacia()
+            binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+            binding.menuFavorite.isEnabled=false
+            binding.menuFavorite.alpha=0.1f
+        }
     }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        //compruebo cuando vuelvo al main si hay datos en base de datos para activar boton favorito
+        if (comprobar_favoritos()){
+
+            if(controlPantallaVuelta=="menu_favorite"){
+                binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
+            }
+           else{
+                binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+           }
+            binding.menuFavorite.isEnabled=true
+            binding.menuFavorite.alpha=1f
+
+
+        }
+        else{
+            binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+            binding.menuFavorite.isEnabled=false
+            binding.menuFavorite.alpha=0.1f
+        }
+    }
+
 
     private fun actualizar_datos_recyclerview() {
         // Actualizar la lista desde el DAO
@@ -110,6 +156,11 @@ class MainActivity : AppCompatActivity() {
             dao.deleteById(data)
 
             actualizar_datos_recyclerview()
+            if(!comprobar_favoritos()){
+                binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+                binding.menuFavorite.isEnabled=false
+                binding.menuFavorite.alpha=0.1f
+            }
 
 
         }
@@ -124,13 +175,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    override fun onResume() {
-        super.onResume()
 
-
-
-
-    }
 
     private fun dialogo_database_vacia() {
         // Crear el diálogo de alerta
@@ -148,13 +193,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun comprobar_favoritos(): Boolean {
 
-        listaDB=dao.findAll()
+
         var hayFavoritos = false
 
-        if(listaDB.isNotEmpty()){
-            hayFavoritos= true
-        }
-        else{ hayFavoritos= false}
+        if(dao.num_registros_database()>0){ hayFavoritos= true}
 
         return hayFavoritos
 
@@ -220,6 +262,8 @@ class MainActivity : AppCompatActivity() {
     private fun pulsa_menu_date() {
         mostrar_cuadro_dialogo_fecha { fecha ->
             obtener_datos_nasa_retrofit(fecha)
+            binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+            controlPantallaVuelta="menu_date"
         }
     }
     private fun pulsa_menu_azar() {
@@ -234,6 +278,8 @@ class MainActivity : AppCompatActivity() {
             val resultado = editText.text.toString()
             if (resultado.toIntOrNull() != null) {
                 obtener_datos_nasa_retrofit(resultado)
+                binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
+                controlPantallaVuelta="menu_azar"
             } else {
                 val toast = Toast.makeText(this, R.string.aviso_int, Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
