@@ -66,10 +66,10 @@ class DetailActivity : AppCompatActivity() {
             mostrar_cuadro_dialogo_grabar(datosNasa)
         }
 
-       /* binding.menuDelete.setOnClickListener(){
+        binding.menuBorrar.setOnClickListener(){
 
             mostrar_cuadro_dialogo_delete(datosNasa)
-        }*/
+        }
 
     }
 
@@ -96,8 +96,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    /*########COMENTO ESTA FUNCION PORQUE HE QUITADO EL BOTON DE BORRAR DE DETAILS#######
 
+//FALTA QUE AL VOLVER AL MAIN ACTUALICE EL RECYCLERVIEW
     private fun mostrar_cuadro_dialogo_delete(datosNasa: DatosNasa) {
 
         val builder = AlertDialog.Builder(this)
@@ -128,7 +128,7 @@ class DetailActivity : AppCompatActivity() {
         dialog.show()
 
 
-    }*/
+    }
 
     private fun mostrar_cuadro_dialogo_grabar(datosNasa: DatosNasa) {
         val builder = AlertDialog.Builder(this)
