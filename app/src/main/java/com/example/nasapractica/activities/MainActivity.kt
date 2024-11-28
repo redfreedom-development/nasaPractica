@@ -146,11 +146,13 @@ class MainActivity : AppCompatActivity() {
             binding.menuFavorite.alpha=1f
 
 
+
         }
         else{
             binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
             binding.menuFavorite.isEnabled=false
             binding.menuFavorite.alpha=0.1f
+            actualizar_datos_recyclerview()
         }
 
     }
