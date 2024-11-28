@@ -109,6 +109,32 @@ class NasaDAO(val context: Context) {
         return deletedRows
 
     }
+    fun deleteByDate(datosNasa: DatosNasa): Int {
+
+        var deletedRows=0
+        open()
+
+
+        try {
+            // Delete the existing row, returning the number of affected rows
+            deletedRows = db.delete(
+                DatosNasa.TABLE_NAME,
+                "${DatosNasa.COLUMN_DATE} = ?",
+                arrayOf(datosNasa.date) // Asegúrate de convertir los valores a String
+            )
+
+
+
+        } catch (e: Exception) {
+            Log.e("DB", e.stackTraceToString())
+        } finally {
+            close()
+
+
+        }
+        return deletedRows
+
+    }
 
     fun findByDate(date: String) : Boolean {
         open()

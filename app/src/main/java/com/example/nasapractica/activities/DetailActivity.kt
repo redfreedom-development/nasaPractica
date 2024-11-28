@@ -111,7 +111,8 @@ class DetailActivity : AppCompatActivity() {
             // Acción al aceptar
             dialog.dismiss()
 
-            dao.deleteById(datosNasa)
+            //dao.deleteById(datosNasa)
+            dao.deleteByDate(datosNasa)
             //val intent = Intent(this, MainActivity::class.java)
             finish()
             //startActivity(intent)
