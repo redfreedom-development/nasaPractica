@@ -2,11 +2,14 @@ package com.example.nasapractica.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.Gravity
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -73,9 +76,21 @@ class MainActivity : AppCompatActivity() {
         // Listener del menu_azar
         binding.menuAzar.setOnClickListener {
             pulsa_menu_azar() // Llamabas a la función para manejar la acción
+            //este circulo rodea el imagenView para qye se note qye has pulsado
+            generar_circulo_al_pulsar(binding.menuAzar)
+            //Como pulso en azar, los otros botones me aseguro de que no tienen circulo
+            binding.menuFavorite.background=null
+            binding.menuDate.background=null
+
         }
         binding.menuDate.setOnClickListener{
             pulsa_menu_date()
+            //este circulo rodea el imagenView para qye se note qye has pulsado
+
+            generar_circulo_al_pulsar(binding.menuDate)
+            //Como pulso en azar, los otros botones me aseguro de que no tienen circulo
+            binding.menuFavorite.background=null
+            binding.menuAzar.background=null
         }
         binding.menuFavorite.setOnClickListener(){
 
@@ -84,7 +99,13 @@ class MainActivity : AppCompatActivity() {
 
                 binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
                 controlPantallaVuelta="menu_favorite"
+            //este circulo rodea el imagenView para qye se note qye has pulsado
 
+            generar_circulo_al_pulsar(binding.menuFavorite)
+
+            //Como pulso en azar, los otros botones me aseguro de que no tienen circulo
+            binding.menuDate.background=null
+            binding.menuAzar.background=null
 
 
         }
@@ -95,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
              binding.menuFavorite.isEnabled=false
             binding.menuFavorite.alpha=1f
+            generar_circulo_al_pulsar(binding.menuFavorite)
             controlPantallaVuelta="menu_favorite"
 
         }
@@ -320,6 +342,16 @@ class MainActivity : AppCompatActivity() {
 
         datePickerDialog.show()
     }
+fun generar_circulo_al_pulsar(imgView: ImageView){
 
+    val circleDrawable = GradientDrawable().apply {
+        shape = GradientDrawable.OVAL
+        setColor(Color.WHITE) // Color de fondo
+        setStroke(2, Color.RED) // Borde
+    }
+
+
+    imgView.background = circleDrawable
+}
 
 }
