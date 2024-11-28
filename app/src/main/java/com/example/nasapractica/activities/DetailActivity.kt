@@ -112,7 +112,7 @@ class DetailActivity : AppCompatActivity() {
             dialog.dismiss()
 
             dao.deleteById(datosNasa)
-            val intent = Intent(this, MainActivity::class.java)
+            //val intent = Intent(this, MainActivity::class.java)
             finish()
             //startActivity(intent)
 
@@ -146,7 +146,9 @@ class DetailActivity : AppCompatActivity() {
             if(ok!=-1L){
                 Toast.makeText(this, R.string.insert_ok, Toast.LENGTH_SHORT).show()
                 binding.menuGrabar.isEnabled=false
-                binding.menuGrabar.alpha=0.5f
+                binding.menuGrabar.alpha=0.1f
+                binding.menuBorrar.isEnabled=true
+                binding.menuBorrar.alpha=1f
 
             }
 

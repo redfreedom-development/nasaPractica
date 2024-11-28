@@ -40,7 +40,8 @@
                 android:layout_height="34dp"
                 android:src="@drawable/ic_random"
                 android:layout_gravity="end"
-                android:layout_marginEnd="10dp"                 />
+                android:layout_marginEnd="10dp"
+                />
 
             <ImageView
                 android:id="@+id/menu_date"

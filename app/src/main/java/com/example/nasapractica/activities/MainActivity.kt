@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
 
             if(controlPantallaVuelta=="menu_favorite"){
                 binding.menuFavorite.setImageResource(R.drawable.ic_favorite)
+                actualizar_datos_recyclerview()
             }
            else{
                 binding.menuFavorite.setImageResource(R.drawable.ic_nofavorite)
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             binding.menuFavorite.isEnabled=false
             binding.menuFavorite.alpha=0.1f
         }
+
     }
 
 
